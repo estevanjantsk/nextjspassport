@@ -3,7 +3,7 @@ const passport = require("passport")
 const router = express.Router()
 
 router.post('/login',
-  passport.authenticate('local', { session: false }),
+  passport.authenticate('local'),
   async (req, res, next) => {
     // const { email, password } = req.body;
 

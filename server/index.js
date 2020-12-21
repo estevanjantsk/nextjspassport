@@ -1,6 +1,5 @@
 const express = require("express");
 const next = require("next");
-const passport = require("passport");
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -9,15 +8,18 @@ const handle = app.getRequestHandler()
 
 const apiAuth = require('./api/auth')
 
-const localStrategy = require('./strategies/local')
-passport.use(localStrategy)
+const passport = require('./passport')
+passport.initialize()
 
 app.prepare().then(() => {
   const server = express()
 
   server.use(
     express.json(),
-    passport.initialize()
+  )
+
+  server.use(
+    ...passport.middlewares()
   )
 
   server.use('/api/auth', apiAuth)
