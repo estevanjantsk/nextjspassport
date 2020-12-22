@@ -32,9 +32,9 @@ const SignIn = () => {
           <code className={styles.code}>passport-local</code>
         </p>
 
-        <div className={styles.grid}>
+        <div>
           <div onClick={login} className={styles.card}>
-            <p>Just click to try to login</p>
+            <p>click to login</p>
           </div>
         </div>
       </main>
