@@ -9,7 +9,7 @@ const initialize = () => {
   });
 
   passport.deserializeUser(function (id, done) {
-    done(err, { id, name: 'Tevo Deserializado' });
+    done(null, { id, name: 'Tevo Deserializado' });
   });
 }
 

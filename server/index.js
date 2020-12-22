@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session")
 const next = require("next");
 
 const port = parseInt(process.env.PORT, 10) || 3000
@@ -15,6 +16,12 @@ app.prepare().then(() => {
   const server = express()
 
   server.use(
+    session({
+      secret: 'dogs',
+      resave: false,
+      saveUninitialized: true,
+      cookie: { maxAge: 86400000 },
+    }),
     express.json(),
   )
 
