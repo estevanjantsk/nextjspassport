@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  console.log('Home')
   return (
     <div className={styles.container}>
       <Head>
@@ -43,8 +44,7 @@ export default function Home() {
   )
 }
 
-export async function getServerSideProps({ req }) {
-  console.log(req.user)
+export async function getServerSideProps({ req, res }) {
   const user = req.user
   return {
     props: {}, // will be passed to the page component as props
