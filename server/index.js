@@ -1,5 +1,6 @@
 const express = require("express");
-const session = require("express-session")
+const session = require("express-session");
+const flash = require("connect-flash");
 const next = require("next");
 
 const port = parseInt(process.env.PORT, 10) || 3000
@@ -23,7 +24,8 @@ app.prepare().then(() => {
       cookie: { maxAge: 86400000 },
     }),
     express.json(),
-    express.urlencoded({ extended: false })
+    express.urlencoded({ extended: false }),
+    flash()
   )
 
   server.use(

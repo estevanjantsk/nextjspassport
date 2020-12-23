@@ -1,8 +1,10 @@
-import axios from "axios"
+import { useState } from "react";
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 
-const SignIn = () => {
+const SignIn = ({ errorMessages }) => {
+  const [username, setUsername] = useState("teste");
+  const [password, setPassword] = useState("12345");
 
   return (
     <div className={styles.container}>
@@ -20,10 +22,14 @@ const SignIn = () => {
           <code className={styles.code}>passport-local</code>
         </p>
 
+        {errorMessages.map((message, i) => <div key={i}>
+          {message}
+        </div>
+        )}
         <div>
           <form action="/api/auth/signin" method="post">
-            <input type="text" name="username" id="username" defaultValue="teste" />
-            <input type="text" name="password" id="password" defaultValue="12345" />
+            <input type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
+            <input type="text" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
             <button type="submit">login</button>
           </form>
         </div>
@@ -44,3 +50,12 @@ const SignIn = () => {
 }
 
 export default SignIn;
+
+export async function getServerSideProps({ req }) {
+  const errorMessages = req.flash('error');
+  return {
+    props: {
+      errorMessages
+    },
+  }
+}
