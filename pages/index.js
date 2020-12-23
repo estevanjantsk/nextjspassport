@@ -24,15 +24,13 @@ export default function Home({ user }) {
           {user ? (
             <div>
               user logged in: {user.name}
-              <form action="/api/auth/logout" method="get">
+              <form action="/api/auth/logout" method="post">
                 <button type="submit">Logout</button>
               </form>
             </div>
           ) : (
               <Link href="/auth/signin">
-                <a className={styles.card}>
-                  Login
-              </a>
+                <a className={styles.card}> Login </a>
               </Link>
             )}
         </div>
@@ -50,12 +48,5 @@ export default function Home({ user }) {
       </footer>
     </div>
   )
-}
-
-export async function getServerSideProps({ req, res }) {
-  const user = req.user || null
-  return {
-    props: { user }, // will be passed to the page component as props
-  }
 }
 

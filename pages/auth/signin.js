@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../../styles/Home.module.css';
 
 const SignIn = ({ errorMessages }) => {
   const [username, setUsername] = useState("teste");
@@ -22,10 +22,11 @@ const SignIn = ({ errorMessages }) => {
           <code className={styles.code}>passport-local</code>
         </p>
 
-        {errorMessages.map((message, i) => <div key={i}>
-          {message}
-        </div>
-        )}
+        {errorMessages.map((message, i) => (
+          <div key={i}>
+            {message}
+          </div>
+        ))}
         <div>
           <form action="/api/auth/signin" method="post">
             <input type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
@@ -50,12 +51,3 @@ const SignIn = ({ errorMessages }) => {
 }
 
 export default SignIn;
-
-export async function getServerSideProps({ req }) {
-  const errorMessages = req.flash('error');
-  return {
-    props: {
-      errorMessages
-    },
-  }
-}
