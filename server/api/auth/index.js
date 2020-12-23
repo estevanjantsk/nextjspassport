@@ -2,7 +2,7 @@ const express = require("express")
 const passport = require("passport")
 const router = express.Router()
 
-router.post('/login',
+router.post('/signin',
   passport.authenticate('local', { successRedirect: '/' })
 )
 

@@ -23,6 +23,7 @@ app.prepare().then(() => {
       cookie: { maxAge: 86400000 },
     }),
     express.json(),
+    express.urlencoded({ extended: false })
   )
 
   server.use(

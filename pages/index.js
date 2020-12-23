@@ -2,8 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
-  console.log('Home')
+export default function Home({ user }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -22,11 +21,20 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <Link href="/auth/signin">
-            <a className={styles.card}>
-              Login
-            </a>
-          </Link>
+          {user ? (
+            <div>
+              user logged in: {user.name}
+              <form action="/api/auth/logout" method="get">
+                <button type="submit">Logout</button>
+              </form>
+            </div>
+          ) : (
+              <Link href="/auth/signin">
+                <a className={styles.card}>
+                  Login
+              </a>
+              </Link>
+            )}
         </div>
       </main>
 
@@ -45,9 +53,9 @@ export default function Home() {
 }
 
 export async function getServerSideProps({ req, res }) {
-  const user = req.user
+  const user = req.user || null
   return {
-    props: {}, // will be passed to the page component as props
+    props: { user }, // will be passed to the page component as props
   }
 }
 

@@ -4,18 +4,6 @@ import styles from '../../styles/Home.module.css'
 
 const SignIn = () => {
 
-  const login = () => {
-    axios.post('/api/auth/login', {
-      username: "teste",
-      password: "12345"
-    })
-      .then(() => {
-        console.log('opa');
-      }).catch(() => {
-        console.log('error');
-      });
-  }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -33,9 +21,11 @@ const SignIn = () => {
         </p>
 
         <div>
-          <div onClick={login} className={styles.card}>
-            <p>click to login</p>
-          </div>
+          <form action="/api/auth/signin" method="post">
+            <input type="text" name="username" id="username" defaultValue="teste" />
+            <input type="text" name="password" id="password" defaultValue="12345" />
+            <button type="submit">login</button>
+          </form>
         </div>
       </main>
 
