@@ -13,6 +13,7 @@
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "joi": "^17.3.0",
     "mysql2": "^2.2.5",
     "next": "10.0.3",
     "passport": "^0.4.1",
