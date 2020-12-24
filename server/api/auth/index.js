@@ -1,7 +1,7 @@
-const express = require("express")
+const express = require('express');
+const passport = require('passport');
 const Joi = require('joi');
-const { User } = require("../../db/models")
-const passport = require("passport")
+const { User } = require("../../db/models");
 const router = express.Router()
 
 const schema = Joi.object({
@@ -24,8 +24,12 @@ const schema = Joi.object({
 
 router.post('/signup', async (req, res) => {
   try {
-    const value = await schema.validateAsync(req.body, { abortEarly: false });
-    res.json({ status: 'success', message: value })
+    await schema.validateAsync(req.body, { abortEarly: false });
+    const user = await User.create(req.body);
+    req.login(user, function (err) {
+      if (err) { return next(err); }
+      return res.json({ status: 'success', message: 'user successfully created' })
+    });
   }
   catch (err) {
     if (err.isJoi) {
@@ -35,7 +39,7 @@ router.post('/signup', async (req, res) => {
       }, {})
       return res.status(422).json({ status: 'error', message: joiErrors })
     }
-    res.status(500).json({ status: 'error', message: 'something went wrong' })
+    res.status(500).json({ status: 'error', message: err })
   }
 })
 
