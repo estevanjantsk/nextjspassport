@@ -5,11 +5,11 @@ const initialize = () => {
   passport.use(localStrategy);
 
   passport.serializeUser(function ({ id, email, username }, done) {
-    done(null, { id, email, username });
+    return done(null, { id, email, username });
   });
 
   passport.deserializeUser(function (user, done) {
-    done(null, user);
+    return done(null, user);
   });
 }
 

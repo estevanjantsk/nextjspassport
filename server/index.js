@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
+const path = require("path");
 const next = require("next");
 
 const port = parseInt(process.env.PORT, 10) || 3000
@@ -16,6 +17,12 @@ passport.initialize()
 app.prepare().then(() => {
   const server = express()
 
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: false }));
+
+  server.use(express.static(path.join(__dirname, '../public')));
+  server.use('/_next', express.static(path.join(__dirname, '../.next')));
+
   server.use(
     session({
       secret: 'dogs',
@@ -23,14 +30,17 @@ app.prepare().then(() => {
       saveUninitialized: true,
       cookie: { maxAge: 86400000 },
     }),
-    express.json(),
-    express.urlencoded({ extended: false }),
     flash()
   )
 
   server.use(
     ...passport.middlewares()
   )
+
+  server.use(function (req, res, next) {
+    console.log('handling request for: ' + req.url);
+    next();
+  });
 
   server.use('/api/auth', apiAuth)
 

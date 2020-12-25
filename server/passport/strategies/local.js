@@ -18,8 +18,6 @@ const localStrategy = new Strategy(async (username, password, done) => {
     return done(null, false, { message: 'invalid username or email' });
   }
 
-  console.log({ user, password, check: user.isPasswordValid(password) });
-
   if (! await user.isPasswordValid(password)) {
     return done(null, false, { message: 'Incorrect password.' });
   }
