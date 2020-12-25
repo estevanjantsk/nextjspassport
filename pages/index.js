@@ -1,8 +1,20 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useStoreState, useStoreActions } from "easy-peasy";
+import axios from "axios";
 import styles from '../styles/Home.module.css'
 
-export default function Home({ user }) {
+export default function Home() {
+  const user = useStoreState((state) => state.user);
+  const setUser = useStoreActions((actions) => actions.setUser);
+
+  const logout = () => {
+    axios.post('/api/auth/logout', {})
+      .then(() => {
+        setUser(null);
+      })
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -24,9 +36,7 @@ export default function Home({ user }) {
           {user ? (
             <div>
               user logged in: {user.name}
-              <form action="/api/auth/logout" method="post">
-                <button type="submit">Logout</button>
-              </form>
+              <button onClick={logout} type="submit">Logout</button>
             </div>
           ) : (
               <Link href="/auth/signin">

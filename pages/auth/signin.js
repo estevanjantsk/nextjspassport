@@ -1,10 +1,30 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useStoreActions } from "easy-peasy";
+import axios from "axios";
 import styles from '../../styles/Home.module.css';
 
-const SignIn = ({ errorMessages }) => {
-  const [username, setUsername] = useState("teste");
-  const [password, setPassword] = useState("12345");
+const SignIn = () => {
+  const router = useRouter();
+  const setUser = useStoreActions((actions) => actions.setUser);
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  const signIn = (e) => {
+    e.preventDefault();
+    axios.post('/api/auth/signin', { username, password })
+      .then(res => res.data)
+      .then(({ user }) => {
+        setUser(user);
+        router.push('/');
+      })
+      .catch(err => {
+        setErrorMessages([err.response.data.message])
+      })
+  }
 
   return (
     <div className={styles.container}>
@@ -28,7 +48,7 @@ const SignIn = ({ errorMessages }) => {
           </div>
         ))}
         <div>
-          <form action="/api/auth/signin" method="post">
+          <form onSubmit={signIn}>
             <input type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
             <input type="text" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
             <button type="submit">login</button>

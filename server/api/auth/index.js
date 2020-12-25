@@ -30,7 +30,7 @@ router.post('/signup', async (req, res) => {
 
     req.login(user, function (err) {
       if (err) { throw err; }
-      return res.json({ status: 'success', message: 'user successfully created' })
+      return res.json({ status: 'success', message: user })
     });
 
   }
@@ -46,17 +46,24 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-router.post('/signin',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/auth/signin',
-    failureFlash: true
-  })
-)
+router.post('/signin', (req, res, next) => {
+  passport.authenticate('local', function (err, user, info) {
+
+    if (err) { return next(err); }
+
+    if (!user) { return res.status(422).json({ status: 'error', message: info.message }) }
+
+    req.logIn(user, function (err) {
+      if (err) { return next(err); }
+      return res.json({ status: 'success', user });
+    });
+
+  })(req, res, next);
+})
 
 router.post('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.json({ status: 'success', message: 'logged out successfully' });
 });
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const { Strategy } = require('passport-local');
 const { Op } = require("sequelize");
-const utils = require('../../utils');
 const { User } = require("../../db/models");
 
 const localStrategy = new Strategy(async (username, password, done) => {
@@ -15,14 +14,14 @@ const localStrategy = new Strategy(async (username, password, done) => {
   });
 
   if (!user) {
-    return done(null, false, { message: 'invalid username or email' });
+    return done(null, false, { message: 'invalid username/email or password' });
   }
 
   if (! await user.isPasswordValid(password)) {
-    return done(null, false, { message: 'Incorrect password.' });
+    return done(null, false, { message: 'invalid username/email or password' });
   }
 
-  return done(null, user);
+  return done(null, { id: user.id, username: user.username, email: user.email });
 })
 
 module.exports = localStrategy;

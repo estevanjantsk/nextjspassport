@@ -1,17 +1,27 @@
 import NextApp from 'next/app';
+import { StoreProvider } from "easy-peasy";
+import { store } from '../store';
 import '../styles/globals.css';
 
-function App({ Component, pageProps, user, errorMessages }) {
-  return <Component {...{ pageProps, user, errorMessages }} />
+function App({ Component, pageProps, user }) {
+
+  if (user) {
+    store.getActions().setUser(user);
+  }
+
+  return (
+    <StoreProvider store={store}>
+      <Component {...pageProps} />
+    </StoreProvider>
+  )
 }
 
 App.getInitialProps = async (appContext) => {
   const appProps = await NextApp.getInitialProps(appContext);
   const req = appContext.ctx.req;
   const user = req ? req.user : null;
-  const errorMessages = req ? req.flash('error') : [];
 
-  return { ...appProps, user, errorMessages }
+  return { ...appProps, user }
 }
 
 export default App

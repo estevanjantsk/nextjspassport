@@ -9,6 +9,13 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const db = require("./db/models")
+const sequelizeStore = new SequelizeStore({
+  db: db.sequelize,
+});
+sequelizeStore.sync();
+
 const apiAuth = require('./api/auth')
 
 const passport = require('./passport')
@@ -27,8 +34,9 @@ app.prepare().then(() => {
     session({
       secret: 'dogs',
       resave: false,
-      saveUninitialized: true,
-      cookie: { maxAge: 86400000 },
+      saveUninitialized: false,
+      cookie: { secure: false, maxAge: 86400000 },
+      store: sequelizeStore,
     }),
     flash()
   )
