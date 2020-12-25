@@ -22,7 +22,9 @@ const SignIn = () => {
         router.push('/');
       })
       .catch(err => {
-        setErrorMessages([err.response.data.message])
+        if (err.response) {
+          setErrorMessages([err.response.data.error])
+        }
       })
   }
 

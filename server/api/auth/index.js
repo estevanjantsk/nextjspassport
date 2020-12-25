@@ -30,7 +30,7 @@ router.post('/signup', async (req, res) => {
 
     req.login(user, function (err) {
       if (err) { throw err; }
-      return res.json({ status: 'success', message: user })
+      return res.json({ status: 'success', user })
     });
 
   }
@@ -40,9 +40,15 @@ router.post('/signup', async (req, res) => {
         (rv[x['context']['key']] = rv[x['context']['key']] || []).push(x['message']);
         return rv;
       }, {})
-      return res.status(422).json({ status: 'error', message: joiErrors })
+      return res.status(422).json({ status: 'error', error: joiErrors })
     }
-    res.status(500).json({ status: 'error', message: err })
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      const type = {
+        'Users.unique_email': { email: ['Email already exists'] },
+        'Users.unique_username': { username: ['Username already exists'] },
+      }[err.errors[0].path]
+      res.status(500).json({ status: 'error', error: type })
+    }
   }
 })
 
@@ -51,7 +57,7 @@ router.post('/signin', (req, res, next) => {
 
     if (err) { return next(err); }
 
-    if (!user) { return res.status(422).json({ status: 'error', message: info.message }) }
+    if (!user) { return res.status(422).json({ status: 'error', error: info.message }) }
 
     req.logIn(user, function (err) {
       if (err) { return next(err); }

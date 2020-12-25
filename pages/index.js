@@ -39,9 +39,14 @@ export default function Home() {
               <button onClick={logout} type="submit">Logout</button>
             </div>
           ) : (
-              <Link href="/auth/signin">
-                <a className={styles.card}> Login </a>
-              </Link>
+              <>
+                <Link href="/auth/signin">
+                  <a className={styles.card}> Signin </a>
+                </Link>
+                <Link href="/auth/signup">
+                  <a className={styles.card}> Signup </a>
+                </Link>
+              </>
             )}
         </div>
       </main>
