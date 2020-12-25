@@ -2,14 +2,14 @@ const passport = require('passport')
 const localStrategy = require('./strategies/local')
 
 const initialize = () => {
-  passport.use(localStrategy)
+  passport.use(localStrategy);
 
-  passport.serializeUser(function (user, done) {
-    done(null, user.id);
+  passport.serializeUser(function ({ id, email, username }, done) {
+    done(null, { id, email, username });
   });
 
-  passport.deserializeUser(function (id, done) {
-    done(null, { id, name: 'Tevo Deserializado' });
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
   });
 }
 

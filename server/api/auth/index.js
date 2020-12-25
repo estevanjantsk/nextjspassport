@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const Joi = require('joi');
 const { User } = require("../../db/models");
-const router = express.Router()
+const router = express.Router();
 
 const schema = Joi.object({
   username: Joi.string()
@@ -25,11 +25,14 @@ const schema = Joi.object({
 router.post('/signup', async (req, res) => {
   try {
     await schema.validateAsync(req.body, { abortEarly: false });
+
     const user = await User.create(req.body);
+
     req.login(user, function (err) {
-      if (err) { return next(err); }
+      if (err) { throw err; }
       return res.json({ status: 'success', message: 'user successfully created' })
     });
+
   }
   catch (err) {
     if (err.isJoi) {

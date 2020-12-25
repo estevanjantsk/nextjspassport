@@ -1,10 +1,29 @@
 const { Strategy } = require('passport-local');
+const { Op } = require("sequelize");
+const utils = require('../../utils');
+const { User } = require("../../db/models");
 
-const localStrategy = new Strategy((username, password, done) => {
-  const user = { id: "123", name: "Tevo" };
-  if (password !== "12345") {
+const localStrategy = new Strategy(async (username, password, done) => {
+
+  let user = await User.findOne({
+    where: {
+      [Op.or]: [
+        { username: username },
+        { email: username }
+      ]
+    }
+  });
+
+  if (!user) {
+    return done(null, false, { message: 'invalid username or email' });
+  }
+
+  console.log({ user, password, check: user.isPasswordValid(password) });
+
+  if (! await user.isPasswordValid(password)) {
     return done(null, false, { message: 'Incorrect password.' });
   }
+
   return done(null, user);
 })
 
