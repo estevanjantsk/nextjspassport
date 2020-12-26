@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import NextApp from 'next/app';
 import { StoreProvider } from "easy-peasy";
 import { store } from '../store';
@@ -5,9 +6,11 @@ import '../styles/globals.css';
 
 function App({ Component, pageProps, user }) {
 
-  if (user) {
-    store.getActions().setUser(user);
-  }
+  useEffect(() => {
+    if (user) {
+      store.getActions().setUser(user);
+    }
+  }, [user])
 
   return (
     <StoreProvider store={store}>

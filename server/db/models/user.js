@@ -32,13 +32,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-    }
+    },
+    googleId: {
+      type: DataTypes.STRING,
+    },
   }, {
     sequelize,
     modelName: 'User',
   });
   User.beforeCreate(async user => {
-    user.password = await bcrypt.hash(user.password, 10);
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 10);
+    }
   })
   return User;
 };

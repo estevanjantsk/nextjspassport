@@ -56,6 +56,10 @@ const SignIn = () => {
             <button type="submit">login</button>
           </form>
         </div>
+        <hr />
+        <div>
+          <a href="/api/auth/google">SINGIN WITH GOOGLE</a>
+        </div>
       </main>
 
       <footer className={styles.footer}>

@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const cors = require('cors');
 const Joi = require('joi');
 const { User } = require("../../db/models");
 const router = express.Router();
@@ -71,5 +72,16 @@ router.post('/logout', (req, res) => {
   req.logout();
   res.json({ status: 'success', message: 'logged out successfully' });
 });
+
+router.get('/google',
+  passport.authenticate('google', { scope: ["email", "profile"] }));
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: 'auth/signin' }),
+  function (req, res) {
+    req.session.save(function (err) {
+      res.redirect('/');
+    })
+  });
 
 module.exports = router;

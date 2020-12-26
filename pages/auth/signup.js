@@ -16,7 +16,6 @@ const SignUp = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const setUser = useStoreActions((actions) => actions.setUser);
 
-
   const signUp = (e) => {
     e.preventDefault();
     axios.post('/api/auth/signup', userForm)
@@ -82,6 +81,10 @@ const SignUp = () => {
             </div>
             <button type="submit">signup</button>
           </form>
+          <hr />
+          <div>
+            <a href="/api/auth/google">SINGUP WITH GOOGLE</a>
+          </div>
         </div>
       </main>
     </div>
