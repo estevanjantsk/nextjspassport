@@ -1,7 +1,13 @@
-const Instructor = () => {
+import Layout from "../../components/trainer/Layout";
+
+const Trainer = () => {
   return (
-    <div>Instructor</div>
+    <Layout>
+      <div>
+        huhas
+      </div>
+    </Layout>
   )
 }
 
-export default Instructor;
+export default Trainer;
