@@ -3,6 +3,7 @@ import NextApp from 'next/app';
 import { StoreProvider } from "easy-peasy";
 import { store } from '../store';
 import '../styles/globals.css';
+import '../styles/index.css';
 
 function App({ Component, pageProps, user }) {
 
@@ -10,6 +11,7 @@ function App({ Component, pageProps, user }) {
     if (user) {
       store.getActions().setUser(user);
     }
+    return () => { }
   }, [user])
 
   return (
